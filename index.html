@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html = lang="en-us">
+<head>
+	<meta charset = "UTF-8">
+	<title> This is Arturo's Psychic Game</title>
+</head>
+
+<!-- Starting the body of my HTML-->
+<body>
+	<!--Adding text to HTML so that the user knows what to do-->
+	<div id = "theScreen">
+		<h1> The Psychic Game </h1>
+		<p> Guess what letter I am thinking of! </p>
+		<p> Total Wins: 0 </p> 
+		<p> Total Losses: 0 </p> 
+		<p> Number of Guesses Left : 9 </p>
+		<p> Your Guesses So Far: </p>
+
+	</div>
+	<!--Starting my Javascript for the game-->
+	<script type = "text/javascript">
+	//I am going to need variables to 1) keep up with the wins, loses, number of guesses left 2) store the computers letter 3) store the users current guess 4) store all of the users guesses
+		var wins = 0;
+		var losses = 0;
+		var allGuess = [];
+		var gLeft = 9;
+		var theLetters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+		//making a separate function that will randomly pick a letter when I call for it. After hours of staring, I realized the computer guess has to be a GLOBAL variable that only changes when the game/round is over
+
+		//I have to have a the computer "choose" a letter between A-Z. This means the computer has 26 potential guesses. If the letters were stored in an array,the integer indices would range from 0 t0 25. If I use the random method, multiply by 25, and round down (floor method), I should be able to always obtain an index bewteen 0 and 25. After making it to the end, I realized the computer would change its guess unless, I told it otherwise. I only want the computer to change its choice when the player has a total of 9 guess remaining: this means the user is starting brand new game or has lost but is going to keep playing more rounds.}r
+		function randomGuess(){		
+			var computerGuess = theLetters[Math.floor(Math.random() * 25 )];
+			return computerGuess
+
+		}
+		var comGuess = randomGuess();
+		
+
+	//Initializing a function that will run when the user presses a key
+	document.onkeyup = function(theGame) {
+		var userGuess = theGame.key;
+		userGuess.toLowerCase(); //using method to make a letter lower case
+		//making an overall if statement that will only complete the operations IF the input is a letter. Else, it will display a message for user to enter an acceptable key.
+
+		if (theLetters.indexOf(userGuess)>-1){
+			//before continuing, we must see if the letter has been guess before. The letter is stored in allGuess, which will only ever be length of 9 (index of 0 to 8)
+			if (allGuess.indexOf(userGuess) > -1 && allGuess.indexOf(userGuess) < 9){
+				var message = "<h3>You have already guess this letter. Please review your guesses and select a different letter</h3>";
+			}
+			//I have to compare the computer's guess and the users guess. AND also make sure the key is valid
+			else if (userGuess == comGuess){
+				//if they are the same, update wins by 1
+				wins++;
+				var message = "<h2>You are Correct! 1 point for you. Let's play again!</h2>";
+				gLeft = 9;//resetting # of guesses to 9
+				allGuess = [];
+				comGuess = randomGuess();
+
+			}	
+
+			// If they are not the same, the # of guesses should decrease by 1, the guessed letter should be stored in the array of guesses made . Also, I am going to add a message to the screen to let the user know he won or to try again. Also, just remembered, I want a loop for this so that the user keep playing until either 1) all nine guesses are used up or 2) the guess was correct. The loop should include the user's guess but not the computers...i hope.
+			else if (allGuess.length < 8){
+				gLeft = gLeft - 1 ;
+				var message = "This is not the letter I was thinking of. Guess again!"; 
+				allGuess.push(userGuess);
+			}
+			//once the user has used up all his guesses, a new round should begin. this means that the # of guesses need to return to 9 and that guesses made need to return to blank
+			else if (allGuess.length <= 9) {
+				var message = "You are out of guesses. Press a key to play another round";
+				losses++;
+				gLeft = 9;
+				allGuess = [];
+				comGuess = randomGuess();
+			}
+		}
+		else {var message = "Please press a letter from the alphabet :) ";}
+
+		//trying to store all the guesses in the array "allGuess". This should happen whether the user wins or loses. 
+
+		//going to write a string that will become my html code and print on the page.
+		var html = 	"<h1> The Psychic Game </h1> <p> Guess what letter I am thinking of! </p> <p> Total Wins: " + wins + "</p>" +
+		"<p> Total Losses: " + losses + "</p>" +
+		"<p> Number of Guesses Left : " + gLeft + "</p>" +
+		"<p> Your Guesses So Far: " + allGuess  + "</p>" +
+		 "<p>" + message + "</p>" + comGuess ;
+
+		document.querySelector("#theScreen").innerHTML = html;
+
+
+	}
+	</script>
+
+
+</body>
+
+</html>
