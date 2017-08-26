@@ -1,0 +1,15 @@
+###Psychic-Game Markdown
+
+1. Make a game where the computer randomly selects a letter and the user tries to guess that letter
+
+2. The game should display
+
+	a. # of Wins: (# of times the user has guessed the letter correctly)
+	b. # of Losses: (# of times the user has failed to guess the letter correctly after exhausting all guesses)
+	c. # of Guesses Left: (# of guesses left. This will update)
+	d. All of the player's Guesses So Far: (the specific letters that the user typed. Display these until the user either wins or loses.)
+
+3. When the player wins, increase the Wins counter by 1 and start the game over again (without refreshing the page).
+
+4. When the player loses, increase the Losses counter by 1 and restart the game without a page refresh (just like when the user wins).
+
